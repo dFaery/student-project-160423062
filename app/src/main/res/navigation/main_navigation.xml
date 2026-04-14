@@ -17,5 +17,9 @@
         android:id="@+id/studentDetailFragment"
         android:name="com.nmp160423062.studentproject.view.StudentDetailFragment"
         android:label="fragment_student_detail"
-        tools:layout="@layout/fragment_student_detail" />
+        tools:layout="@layout/fragment_student_detail" >
+        <argument
+            android:name="nrp"
+            app:argType="string" />
+    </fragment>
 </navigation>

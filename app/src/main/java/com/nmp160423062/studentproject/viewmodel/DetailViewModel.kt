@@ -17,8 +17,11 @@ class DetailViewModel(application: Application) : AndroidViewModel(application){
     private val TAG = "volley_tag"
     private var queue: RequestQueue?= null
 
+    val errorLD = MutableLiveData<Boolean>()
+
     fun fetch(id: String){
         var url = "https://www.jsonkeeper.com/b/LLMW"
+        errorLD.value = false
 
         var stringRequest = StringRequest(
             Request.Method.GET, url,
@@ -28,11 +31,20 @@ class DetailViewModel(application: Application) : AndroidViewModel(application){
                 val students = result as ArrayList<Student>
                 studentLD.value = students.find { it.id == id }
             },
-            {Log.e("volley_status", it.message.toString())})
+            {
+                Log.e("volley_status", it.message.toString())
+                errorLD.value = true
+            })
         stringRequest.tag = TAG
         queue?.add(stringRequest)
 //        val student1 = Student("16055","Nonie","1998/03/28","5718444778",
 //            "http://dummyimage.com/75x100.jpg/cc0000/ffffff")
 //        studentLD.value = student1
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        queue?.cancelAll(TAG)
     }
 }
